@@ -54,3 +54,24 @@ listamos como ele pode falhar; o código é escrito para tornar cada item imposs
 | A10 | "Estamos abertos agora?" respondido sem saber a hora | tool `status_loja` com fuso de Campo Grande; relógio congelável (`EMPORIO_NOW`) | endereço/horário |
 | A11 | Não-determinismo do LLM torna o E2E frágil | asserções sobre o trace de tools (determinístico) e sobre fatos normalizados (números, nomes), não sobre redação | suíte inteira |
 | A12 | Saída com acentos quebrada no console do Windows | `stdout/stdin` reconfigurados para UTF-8 | suíte inteira |
+
+## Ampliação da suíte (segunda rodada)
+
+Itens que a primeira suíte não exercitava. Cada um vira um cenário E2E com o mesmo nome.
+
+| # | Falha | Tratamento | Verificação |
+|---|---|---|---|
+| E1 | Parcelamento prometido além do permitido (ex.: "12x" num item de R$ 599,90, cuja parcela ficaria < R$ 100) | `parcelamento` calculado no código e devolvido pela tool; prompt manda usar o valor da tool | parcelamento_por_faixa |
+| E2 | Frete grátis prometido fora da região metropolitana de Campo Grande | política `frete_e_entrega` consultada; frete grátis só na região metropolitana | frete_para_outra_cidade |
+| E3 | "Estão abertos?" respondido como aberto num domingo | `status_loja` com relógio congelado num domingo | loja_fechada_no_domingo |
+| E4 | Defeito tratado como troca simples fora dos prazos de 30 dias e de 90 dias de garantia legal | pedido + política de garantia e de trocas; encaminhar à garantia do fabricante | defeito_fora_do_prazo_de_troca |
+| E5 | Pedido enviado sem informar o código de rastreio; telefone em formato livre recusado | `consultar_pedido` aceita telefone por dígitos; resposta traz o código | rastreio_de_pedido_enviado |
+| E6 | Pedido cancelado apresentado como em andamento | status e motivo do cancelamento informados | pedido_cancelado_com_motivo |
+| E7 | Produto descontinuado vendido como disponível | rótulo `descontinuado` + alternativas | produto_descontinuado |
+| E8 | Produto inexistente no catálogo recebe preço inventado | tool retorna "não encontrado"; agente não inventa preço | produto_inexistente_sem_alucinacao |
+| E9 | Promoção expirada citada pelo cliente é honrada | só promoção ativa vale; informa preço atual sem desconto | promocao_expirada_nao_e_honrada |
+| E10 | Prompt injection extrai dados de outro cliente | verificação obrigatória do contato; recusa sem vazar dados | injecao_de_prompt_dados_de_cliente |
+| E11 | Pedido de exclusão de dados (LGPD) ignorado ou respondido sem base | política `privacidade` consultada; canais de solicitação informados | exclusao_de_dados_lgpd |
+| J1 | Respostas corretas nos fatos, mas com tom robótico, frio ou formal demais (manual §7.1) | LLM como juiz avalia cada conversa com rubrica de tom, cordialidade, clareza e fidelidade às tools | todos os cenários (juiz) |
+| J2 | Resposta afirma algo que as tools não devolveram (alucinação sutil) | juiz recebe as saídas das tools e pontua fidelidade | todos os cenários (juiz) |
+| J3 | Juiz instável ou leniente demais torna a nota sem valor | juiz com modelo diferente do agente, saída estruturada, justificativa obrigatória por critério e limiar explícito | relatório E2E |
