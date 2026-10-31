@@ -39,3 +39,12 @@ def _thousands_groups(integer: str) -> list[str]:
     head_length = len(integer) % 3 or 3
     head, tail = integer[:head_length], integer[head_length:]
     return [head, *(tail[index : index + 3] for index in range(0, len(tail), 3))]
+
+
+def sentences_mentioning(text: str, terms: list[str]) -> list[str]:
+    """Frases (ou linhas) do texto que citam algum dos termos, para checar o que é dito sobre eles.
+
+    A quebra exige espaço após a pontuação, então "R$ 1.000,00" não é cortado no meio.
+    """
+    pieces = re.split(r"(?<=[.!?])\s+|\n+", text)
+    return [piece for piece in pieces if mentioned(piece, terms)]

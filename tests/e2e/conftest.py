@@ -8,6 +8,7 @@ from pathlib import Path
 import pytest
 from dotenv import dotenv_values
 
+from .support.judge import Judge
 from .support.report import RunInfo, reset_directory, write_report
 from .support.runner import ConversationRunner, RunConversation, Transcript
 from .support.scenario import Example, Scenario
@@ -22,6 +23,7 @@ SKIP_REASON = (
 
 SCENARIOS_KEY = pytest.StashKey[list[Scenario]]()
 SCENARIO_KEY = pytest.StashKey[Scenario]()
+JUDGE_KEY = pytest.StashKey[Judge | None]()
 
 
 def cli_environment() -> dict[str, str]:
@@ -39,6 +41,9 @@ def pytest_configure(config: pytest.Config) -> None:
         "markers", "example(number, slug, title): cenário também publicado em examples/"
     )
     config.stash[SCENARIOS_KEY] = []
+    config.stash[JUDGE_KEY] = (
+        Judge.from_environment(cli_environment()) if api_key_available() else None
+    )
 
 
 def pytest_sessionstart(session: pytest.Session) -> None:
@@ -71,9 +76,11 @@ def pytest_sessionfinish(session: pytest.Session) -> None:
     scenarios = session.config.stash[SCENARIOS_KEY]
     if not scenarios:
         return
+    judge = session.config.stash[JUDGE_KEY]
     run = RunInfo(
         timestamp=datetime.now().astimezone().isoformat(timespec="seconds"),
         model=cli_environment().get("EMPORIO_MODEL") or DEFAULT_MODEL,
+        judge_model=judge.model if judge else None,
     )
     write_report(scenarios, run, REPORT_DIR, EXAMPLES_DIR)
 
@@ -85,6 +92,7 @@ def scenario(request: pytest.FixtureRequest) -> Scenario:
         name=test_function.__name__.removeprefix("test_"),
         description=" ".join((test_function.__doc__ or "").split()),
         example=_example_from_marker(request.node.get_closest_marker("example")),
+        judge=request.config.stash[JUDGE_KEY],
     )
     request.node.stash[SCENARIO_KEY] = record
     request.config.stash[SCENARIOS_KEY].append(record)

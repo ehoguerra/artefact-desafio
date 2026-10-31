@@ -3,6 +3,7 @@
 from collections.abc import Callable
 from dataclasses import dataclass, field
 
+from .judge import CHECK_PREFIX, Judge, Judgement
 from .runner import ToolCall, Transcript
 from .text import mentioned
 
@@ -33,6 +34,8 @@ class Scenario:
     outcome: str = "not_run"
     error: str | None = None
     duration_seconds: float = 0.0
+    judge: Judge | None = None
+    judgement: Judgement | None = None
 
     @property
     def passed(self) -> bool:
@@ -72,10 +75,22 @@ class Scenario:
         self.check(name, holds, _excerpt(text))
 
     def assert_all_checks_passed(self) -> None:
+        """Último passo de todo teste: o juiz avalia as conversas e então falha se algo falhou."""
+        self._judge_transcripts()
         failed = [check for check in self.checks if not check.passed]
         if failed:
             lines = "\n".join(f"- {check.name}: {check.detail}" for check in failed)
             raise AssertionError(f"{len(failed)} verificação(ões) falharam:\n{lines}")
+
+    def _judge_transcripts(self) -> None:
+        if self.judge is None or not self.transcripts:
+            return
+        self.judgement = self.judge.evaluate(self.description, self.transcripts)
+        if self.judgement.error:
+            self.check(f"{CHECK_PREFIX}avaliação", False, self.judgement.error)
+        for score in self.judgement.scores:
+            detail = f"nota {score.score}/5 (mínimo {score.threshold}) — {score.justification}"
+            self.check(score.check_name, score.passed, detail)
 
 
 def _describe(calls: list[ToolCall]) -> str:

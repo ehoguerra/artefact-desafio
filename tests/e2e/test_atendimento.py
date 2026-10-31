@@ -43,6 +43,8 @@ DEVOLUCAO_POSSIVEL = [
     "e possivel",
     "tem direito",
     "pode sim",
+    "ainda esta no prazo",
+    "voce esta no prazo",
 ]
 
 
