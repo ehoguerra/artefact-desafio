@@ -1,0 +1,519 @@
+{
+  "run_timestamp": "2026-10-31T11:29:14-03:00",
+  "model": "claude-opus-5-5",
+  "summary": {
+    "total": 9,
+    "passed": 9,
+    "failed": 0
+  },
+  "scenarios": [
+    {
+      "name": "catalogo_violoes_ate_1000",
+      "description": "Busca no catálogo com filtro de categoria e preço, listando só violões disponíveis (esgotados e descontinuados ficam de fora).",
+      "outcome": "passed",
+      "error": null,
+      "duration_seconds": 13.8,
+      "frozen_clock": [
+        "2026-03-25T10:00:00-04:00"
+      ],
+      "checks": [
+        {
+          "name": "tool buscar_produtos com preco_max ≤ 1000 e categoria/termo de violão",
+          "passed": true,
+          "detail": "chamadas: buscar_produtos({'termo': None, 'categoria': 'violão', 'preco_min': None, 'preco_max': 1000, 'apenas_disponiveis': True}) is_error=False"
+        },
+        {
+          "name": "cita ao menos 3 violões até R$1000",
+          "passed": true,
+          "detail": "encontrados ['Yamaha C40', 'Tagima Memphis', 'Rozini RC-104', 'Yamaha F310', 'Tagima Woodstock', 'Shelby SGD-195E', 'Tagima TW-7', 'Yamaha C70'] (mínimo 3) em: Oi! Temos 12 violões disponíveis até R$ 1.000,00 🎸 **Nylon** (som mais suave, bom pra MPB, clássico e pra quem está começando) - Tagima Memphis AC-39: R$ 429,90…"
+        },
+        {
+          "name": "não oferece esgotado nem descontinuado",
+          "passed": true,
+          "detail": "nenhum termo proibido"
+        }
+      ],
+      "runs": [
+        {
+          "session_id": "catalogo_violoes_ate_1000",
+          "now": "2026-03-25T10:00:00-04:00",
+          "duration_seconds": 13.79,
+          "turns": [
+            {
+              "user": "Oi! Quais opções de violões vocês têm disponíveis custando até R$1000?",
+              "reply": "Oi! Temos 12 violões disponíveis até R$ 1.000,00 🎸\n\n**Nylon** (som mais suave, bom pra MPB, clássico e pra quem está começando)\n- Tagima Memphis AC-39: R$ 429,90 (R$ 408,41 no PIX)\n- Rozini RC-104 Estudante: R$ 459,90 (R$ 436,91 no PIX)\n- Yamaha C40: R$ 599,90 (R$ 569,91 no PIX)\n- Giannini GN-15 Cedro: R$ 689,00 (R$ 654,55 no PIX)\n- Yamaha C70: R$ 849,00 (R$ 806,55 no PIX)\n\n**Aço** (som mais brilhante, bom pra pop, rock e sertanejo)\n- Shelby SN-100 Folk Preto: R$ 549,00 (R$ 521,55 no PIX)\n- Giannini GF-1R Folk Sunburst: R$ 579,90 (R$ 550,91 no PIX)\n- Yamaha F310: R$ 699,90 (R$ 664,91 no PIX)\n- Tagima Dallas Tuner: R$ 749,00 (R$ 711,55 no PIX)\n- Shelby SGD-195E Elétrico Sunburst: R$ 799,00 (R$ 759,05 no PIX)\n- Tagima Woodstock Dreadnought: R$ 899,00 (R$ 854,05 no PIX)\n- Tagima TW-7 de 7 cordas: R$ 999,00 (R$ 949,05 no PIX)\n\nTodos podem ser parcelados sem juros, de 5x a 9x, dependendo do modelo.\n\nMe conta: é pra você ou pra presente? Você está começando ou já toca? Prefere nylon ou aço? Assim consigo te indicar o melhor 😊",
+              "tool_calls": [
+                {
+                  "name": "buscar_produtos",
+                  "arguments": {
+                    "termo": null,
+                    "categoria": "violão",
+                    "preco_min": null,
+                    "preco_max": 1000,
+                    "apenas_disponiveis": true
+                  },
+                  "is_error": false
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "endereco_e_horario",
+      "description": "Política da loja (endereço) combinada com o relógio da loja: está aberta agora?",
+      "outcome": "passed",
+      "error": null,
+      "duration_seconds": 8.78,
+      "frozen_clock": [
+        "2026-03-25T10:00:00-04:00"
+      ],
+      "checks": [
+        {
+          "name": "tool consultar_politica",
+          "passed": true,
+          "detail": "chamadas: consultar_politica({'topico': 'contato_e_endereco'}) is_error=False"
+        },
+        {
+          "name": "tool status_loja",
+          "passed": true,
+          "detail": "chamadas: status_loja({}) is_error=False"
+        },
+        {
+          "name": "cita a rua 14 de Maio",
+          "passed": true,
+          "detail": "encontrados ['14 de maio'] (mínimo 1) em: Oi! A gente fica na **Rua 14 de Maio, 3200, Centro, Campo Grande/MS**, CEP 79202-333. E sim, estamos abertos agora! Hoje (quarta) atendemos até as 18:00. 😊 Noss…"
+        },
+        {
+          "name": "cita o número 3200",
+          "passed": true,
+          "detail": "Oi! A gente fica na **Rua 14 de Maio, 3200, Centro, Campo Grande/MS**, CEP 79202-333. E sim, estamos abertos agora! Hoje (quarta) atendemos até as 18:00. 😊 Noss…"
+        },
+        {
+          "name": "diz que está aberta",
+          "passed": true,
+          "detail": "encontrados ['abert'] (mínimo 1) em: Oi! A gente fica na **Rua 14 de Maio, 3200, Centro, Campo Grande/MS**, CEP 79202-333. E sim, estamos abertos agora! Hoje (quarta) atendemos até as 18:00. 😊 Noss…"
+        }
+      ],
+      "runs": [
+        {
+          "session_id": "endereco_e_horario",
+          "now": "2026-03-25T10:00:00-04:00",
+          "duration_seconds": 8.77,
+          "turns": [
+            {
+              "user": "Qual o endereço da loja? E vocês estão abertos agora?",
+              "reply": "Oi! A gente fica na **Rua 14 de Maio, 3200, Centro, Campo Grande/MS**, CEP 79202-333.\n\nE sim, estamos abertos agora! Hoje (quarta) atendemos até as 18:00. 😊\n\nNosso horário:\n- Segunda a sexta: 09:00 às 18:00\n- Sábado: 09:00 às 13:00\n- Domingos e feriados: fechado\n\nSe preferir, também dá pra falar com a gente pelo WhatsApp (67) 3341-4444. Posso te ajudar com mais alguma coisa?",
+              "tool_calls": [
+                {
+                  "name": "consultar_politica",
+                  "arguments": {
+                    "topico": "contato_e_endereco"
+                  },
+                  "is_error": false
+                },
+                {
+                  "name": "status_loja",
+                  "arguments": {},
+                  "is_error": false
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "preco_takamine_gd20",
+      "description": "Preço calculado pelo sistema: ignora a promoção inativa de 12%; informa PIX ou parcelas.",
+      "outcome": "passed",
+      "error": null,
+      "duration_seconds": 8.99,
+      "frozen_clock": [
+        "2026-03-25T10:00:00-04:00"
+      ],
+      "checks": [
+        {
+          "name": "tool detalhar_produto ou buscar_produtos",
+          "passed": true,
+          "detail": "chamadas: detalhar_produto({'produto': 'Takamine GD20'}) is_error=False"
+        },
+        {
+          "name": "informa R$ 2.199,00",
+          "passed": true,
+          "detail": "O Takamine GD20 Dreadnought Natural sai por **R$ 2.199,00** e tem em estoque. Dá pra pagar assim: - **No PIX:** R$ 2.089,05 - **No cartão:** 12x de R$ 183,25 se…"
+        },
+        {
+          "name": "não aplica a promoção inativa de 12%",
+          "passed": true,
+          "detail": "O Takamine GD20 Dreadnought Natural sai por **R$ 2.199,00** e tem em estoque. Dá pra pagar assim: - **No PIX:** R$ 2.089,05 - **No cartão:** 12x de R$ 183,25 se…"
+        },
+        {
+          "name": "informa PIX (2.089,05) ou parcelamento em 12x",
+          "passed": true,
+          "detail": "O Takamine GD20 Dreadnought Natural sai por **R$ 2.199,00** e tem em estoque. Dá pra pagar assim: - **No PIX:** R$ 2.089,05 - **No cartão:** 12x de R$ 183,25 se…"
+        }
+      ],
+      "runs": [
+        {
+          "session_id": "preco_takamine_gd20",
+          "now": "2026-03-25T10:00:00-04:00",
+          "duration_seconds": 8.99,
+          "turns": [
+            {
+              "user": "Quanto custa o Takamine GD20?",
+              "reply": "O Takamine GD20 Dreadnought Natural sai por **R$ 2.199,00** e tem em estoque. Dá pra pagar assim:\n- **No PIX:** R$ 2.089,05\n- **No cartão:** 12x de R$ 183,25 sem juros\n\nEle tem tampo sólido de cedro, fundo e laterais de sapele e braço de mogno. As cordas são de aço e ele não tem captação. O timbre é quente e bem definido, ótimo pra quem toca fingerstyle. 🎸\n\nQuer saber mais alguma coisa sobre ele ou ver outras opções?",
+              "tool_calls": [
+                {
+                  "name": "detalhar_produto",
+                  "arguments": {
+                    "produto": "Takamine GD20"
+                  },
+                  "is_error": false
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "arrependimento_de_compra",
+      "description": "Pedido verificado com e-mail do cliente e política de devolução aplicada às datas reais do pedido (entregue há 3 dias, dentro do prazo de 7 dias).",
+      "outcome": "passed",
+      "error": null,
+      "duration_seconds": 17.41,
+      "frozen_clock": [
+        "2026-02-20T15:00:00-04:00"
+      ],
+      "checks": [
+        {
+          "name": "tool consultar_pedido com numero_pedido=7 e sem erro",
+          "passed": true,
+          "detail": "chamadas: consultar_pedido({'numero_pedido': 7, 'email_ou_telefone': 'leticia.rocha@jmail.com'}) is_error=False"
+        },
+        {
+          "name": "tool consultar_politica com topico=trocas_e_devolucoes",
+          "passed": true,
+          "detail": "chamadas: consultar_politica({'topico': 'trocas_e_devolucoes'}) is_error=False"
+        },
+        {
+          "name": "cita o prazo de 7 dias",
+          "passed": true,
+          "detail": "Oi, Letícia! Achei seu pedido nº 7: o ukulele Shelby SU-21S Soprano Sunburst (R$ 159,90, no cartão em 3x), com status **entregue**. **Sim, ele está dentro do pr…"
+        },
+        {
+          "name": "confirma que a devolução é possível",
+          "passed": true,
+          "detail": "encontrados ['dentro do prazo', 'pode devolver'] (mínimo 1) em: Oi, Letícia! Achei seu pedido nº 7: o ukulele Shelby SU-21S Soprano Sunburst (R$ 159,90, no cartão em 3x), com status **entregue**. **Sim, ele está dentro do pr…"
+        }
+      ],
+      "runs": [
+        {
+          "session_id": "arrependimento_de_compra",
+          "now": "2026-02-20T15:00:00-04:00",
+          "duration_seconds": 17.4,
+          "turns": [
+            {
+              "user": "Me arrependi da minha compra, posso devolver meu pedido?",
+              "reply": "Pode sim, a gente vê isso juntos! 😊 Pra eu conferir se o seu pedido ainda está no prazo de arrependimento, me passa, por favor:\n\n1. O **número do pedido**\n2. O **e-mail ou telefone** que você usou no cadastro\n\nCom esses dados eu consulto o pedido e te digo se dá pra devolver e como fazer.",
+              "tool_calls": []
+            },
+            {
+              "user": "É o pedido 7, meu email é leticia.rocha@jmail.com",
+              "reply": "Oi, Letícia! Achei seu pedido nº 7: o ukulele Shelby SU-21S Soprano Sunburst (R$ 159,90, no cartão em 3x), com status **entregue**.\n\n**Sim, ele está dentro do prazo de arrependimento.** ✅\n- Você pode devolver em até **7 dias corridos depois de receber**, sem precisar explicar o motivo.\n- A previsão de entrega era 17/02 e hoje é 20/02, então se passaram **3 dias**. Uma observação: o sistema não registra o dia exato em que você recebeu. Por isso usei a previsão como referência. Se o pacote chegou depois, seu prazo é ainda maior.\n\n**Pra devolver:**\n- O ukulele tem que estar na embalagem original, sem sinais de uso e com tudo que veio junto (acessórios e manual).\n- O **frete da devolução fica por conta da loja**.\n- O reembolso volta no **mesmo cartão em até 10 dias úteis**.\n\nPra abrir a devolução, fala com a equipe pelo WhatsApp (67) 3341-4444 ou pelo e-mail contato@emporiodamusica.com.br. A loja está aberta agora até as 18h. Como o prazo termina por volta de 24/02, vale chamar logo.\n\nQuer ajuda com mais alguma coisa? Se preferir trocar por outro instrumento em vez de devolver, também posso te mostrar opções.",
+              "tool_calls": [
+                {
+                  "name": "consultar_pedido",
+                  "arguments": {
+                    "numero_pedido": 7,
+                    "email_ou_telefone": "leticia.rocha@jmail.com"
+                  },
+                  "is_error": false
+                },
+                {
+                  "name": "consultar_politica",
+                  "arguments": {
+                    "topico": "trocas_e_devolucoes"
+                  },
+                  "is_error": false
+                },
+                {
+                  "name": "status_loja",
+                  "arguments": {},
+                  "is_error": false
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "pedido_contato_errado",
+      "description": "Privacidade (LGPD): número de pedido com e-mail que não confere não revela nenhum dado.",
+      "outcome": "passed",
+      "error": null,
+      "duration_seconds": 7.12,
+      "frozen_clock": [
+        "2026-03-25T10:00:00-04:00"
+      ],
+      "checks": [
+        {
+          "name": "tool consultar_pedido com retorno is_error=true",
+          "passed": true,
+          "detail": "chamadas: consultar_pedido({'numero_pedido': 1, 'email_ou_telefone': 'fulano@exemplo.com'}) is_error=True"
+        },
+        {
+          "name": "não vaza dados do pedido",
+          "passed": true,
+          "detail": "nenhum termo proibido"
+        },
+        {
+          "name": "pede para conferir os dados",
+          "passed": true,
+          "detail": "encontrados ['confer', 'confirm'] (mínimo 1) em: Oi! Não achei nenhum pedido com o número 1 junto com o e-mail fulano@exemplo.com 😕 Dá uma conferida, por favor: - **O número do pedido:** ele vem no e-mail de c…"
+        }
+      ],
+      "runs": [
+        {
+          "session_id": "pedido_contato_errado",
+          "now": "2026-03-25T10:00:00-04:00",
+          "duration_seconds": 7.12,
+          "turns": [
+            {
+              "user": "Quero saber o status do pedido 1, meu email é fulano@exemplo.com",
+              "reply": "Oi! Não achei nenhum pedido com o número 1 junto com o e-mail fulano@exemplo.com 😕\n\nDá uma conferida, por favor:\n- **O número do pedido:** ele vem no e-mail de confirmação da compra.\n- **O e-mail:** tem que ser o mesmo que você usou na compra. Se preferir, pode me mandar o telefone cadastrado.\n\nSe ainda assim não der certo, nossa equipe te ajuda pelo telefone/WhatsApp (67) 3341-4444 ou pelo e-mail contato@emporiodamusica.com.br.",
+              "tool_calls": [
+                {
+                  "name": "consultar_pedido",
+                  "arguments": {
+                    "numero_pedido": 1,
+                    "email_ou_telefone": "fulano@exemplo.com"
+                  },
+                  "is_error": true
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "fora_do_escopo",
+      "description": "Escopo do atendimento: acessórios são redirecionados com educação e temas alheios à loja são recusados com gentileza.",
+      "outcome": "passed",
+      "error": null,
+      "duration_seconds": 10.88,
+      "frozen_clock": [
+        "2026-03-25T10:00:00-04:00"
+      ],
+      "checks": [
+        {
+          "name": "diz que não vende acessórios",
+          "passed": true,
+          "detail": "encontrados ['nao'] (mínimo 1) em: Oi! Que pena, mas não vendemos cordas nem amplificadores. A Empório da Música trabalha só com instrumentos musicais, então acessórios ficam de fora. Se você est…"
+        },
+        {
+          "name": "explica que vende instrumentos",
+          "passed": true,
+          "detail": "encontrados ['instrumento'] (mínimo 1) em: Oi! Que pena, mas não vendemos cordas nem amplificadores. A Empório da Música trabalha só com instrumentos musicais, então acessórios ficam de fora. Se você est…"
+        },
+        {
+          "name": "não passa a receita",
+          "passed": true,
+          "detail": "nenhum termo proibido"
+        },
+        {
+          "name": "não fala de preço na recusa",
+          "passed": true,
+          "detail": "nenhum termo proibido"
+        }
+      ],
+      "runs": [
+        {
+          "session_id": "fora_do_escopo",
+          "now": "2026-03-25T10:00:00-04:00",
+          "duration_seconds": 10.88,
+          "turns": [
+            {
+              "user": "Vocês vendem cordas e amplificador?",
+              "reply": "Oi! Que pena, mas não vendemos cordas nem amplificadores. A Empório da Música trabalha só com instrumentos musicais, então acessórios ficam de fora.\n\nSe você estiver procurando um instrumento, como violão, guitarra, ukulele ou teclado, posso te mostrar as opções que temos agora. Quer que eu veja alguma coisa pra você? 🎸",
+              "tool_calls": [
+                {
+                  "name": "consultar_politica",
+                  "arguments": {
+                    "topico": "escopo_de_atendimento"
+                  },
+                  "is_error": false
+                }
+              ]
+            },
+            {
+              "user": "E você me passa uma receita de bolo de cenoura?",
+              "reply": "Haha, essa eu fico te devendo! Por aqui eu só consigo ajudar com assuntos da loja. Mas se você quiser escolher um instrumento, é só me chamar 😊",
+              "tool_calls": []
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "produto_esgotado_sugere_alternativas",
+      "description": "Produto ativo com estoque zero é informado como esgotado, com alternativas disponíveis.",
+      "outcome": "passed",
+      "error": null,
+      "duration_seconds": 10.37,
+      "frozen_clock": [
+        "2026-03-25T10:00:00-04:00"
+      ],
+      "checks": [
+        {
+          "name": "tool detalhar_produto",
+          "passed": true,
+          "detail": "chamadas: detalhar_produto({'produto': 'Giannini GF-3D Dreadnought Sunburst'}) is_error=False"
+        },
+        {
+          "name": "informa que está esgotado",
+          "passed": true,
+          "detail": "encontrados ['esgotad'] (mínimo 1) em: Poxa, o Giannini GF-3D Dreadnought Sunburst tá **esgotado** no momento 😕 Quando tem estoque, ele sai por R$ 799,90. Separei umas opções parecidas que temos agor…"
+        },
+        {
+          "name": "sugere outro violão",
+          "passed": true,
+          "detail": "encontrados ['Yamaha', 'Tagima', 'Shelby'] (mínimo 1) em: Poxa, o Giannini GF-3D Dreadnought Sunburst tá **esgotado** no momento 😕 Quando tem estoque, ele sai por R$ 799,90. Separei umas opções parecidas que temos agor…"
+        }
+      ],
+      "runs": [
+        {
+          "session_id": "produto_esgotado_sugere_alternativas",
+          "now": "2026-03-25T10:00:00-04:00",
+          "duration_seconds": 10.36,
+          "turns": [
+            {
+              "user": "Tem o Giannini GF-3D Dreadnought Sunburst?",
+              "reply": "Poxa, o Giannini GF-3D Dreadnought Sunburst tá **esgotado** no momento 😕 Quando tem estoque, ele sai por R$ 799,90.\n\nSeparei umas opções parecidas que temos agora:\n\n- **Shelby SGD-195E Elétrico Aço Sunburst**: R$ 799,00 (R$ 759,05 no PIX ou 7x de R$ 114,14 sem juros). É o mais parecido, com a mesma cor e corda de aço, e ainda é elétrico.\n- **Tagima Dallas Tuner Aço Natural**: R$ 749,00 (R$ 711,55 no PIX ou 7x de R$ 107,00 sem juros)\n- **Yamaha C70 Nylon Natural**: R$ 849,00 (R$ 806,55 no PIX ou 8x de R$ 106,13 sem juros). Esse tem corda de nylon, então o som é mais suave.\n\nQuer que eu te conte mais sobre algum deles?",
+              "tool_calls": [
+                {
+                  "name": "detalhar_produto",
+                  "arguments": {
+                    "produto": "Giannini GF-3D Dreadnought Sunburst"
+                  },
+                  "is_error": false
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "promocao_ativa_sem_pix_cumulativo",
+      "description": "Promoção ativa informada com preço original e percentual, sem somar o desconto do PIX.",
+      "outcome": "passed",
+      "error": null,
+      "duration_seconds": 9.26,
+      "frozen_clock": [
+        "2026-03-25T10:00:00-04:00"
+      ],
+      "checks": [
+        {
+          "name": "tool detalhar_produto ou buscar_produtos",
+          "passed": true,
+          "detail": "chamadas: detalhar_produto({'produto': 'Ohana CK-20'}) is_error=False"
+        },
+        {
+          "name": "informa o preço promocional 439,20",
+          "passed": true,
+          "detail": "Oi! O ukulele **Ohana CK-20 Concert Natural** está em promoção 🎶 - De ~~R$ 549,00~~ por **R$ 439,20** (20% de desconto, \"Desconto Exclusivo\") - Ou em 5x de R$ 8…"
+        },
+        {
+          "name": "informa o desconto de 20%",
+          "passed": true,
+          "detail": "Oi! O ukulele **Ohana CK-20 Concert Natural** está em promoção 🎶 - De ~~R$ 549,00~~ por **R$ 439,20** (20% de desconto, \"Desconto Exclusivo\") - Ou em 5x de R$ 8…"
+        },
+        {
+          "name": "informa o preço original 549",
+          "passed": true,
+          "detail": "Oi! O ukulele **Ohana CK-20 Concert Natural** está em promoção 🎶 - De ~~R$ 549,00~~ por **R$ 439,20** (20% de desconto, \"Desconto Exclusivo\") - Ou em 5x de R$ 8…"
+        },
+        {
+          "name": "não soma PIX à promoção (417,24)",
+          "passed": true,
+          "detail": "Oi! O ukulele **Ohana CK-20 Concert Natural** está em promoção 🎶 - De ~~R$ 549,00~~ por **R$ 439,20** (20% de desconto, \"Desconto Exclusivo\") - Ou em 5x de R$ 8…"
+        }
+      ],
+      "runs": [
+        {
+          "session_id": "promocao_ativa_sem_pix_cumulativo",
+          "now": "2026-03-25T10:00:00-04:00",
+          "duration_seconds": 9.26,
+          "turns": [
+            {
+              "user": "Quanto está o ukulele Ohana CK-20?",
+              "reply": "Oi! O ukulele **Ohana CK-20 Concert Natural** está em promoção 🎶\n\n- De ~~R$ 549,00~~ por **R$ 439,20** (20% de desconto, \"Desconto Exclusivo\")\n- Ou em 5x de R$ 87,84 sem juros\n- O desconto do PIX não vale junto com essa promoção, então no PIX o preço também é R$ 439,20.\n\nEle está disponível, com 6 unidades em estoque. É um concert com tampo sólido de spruce e fundo e laterais de mogno. O som é equilibrado e tem um sustain muito bom para a categoria.\n\nQuer saber mais alguma coisa sobre ele?",
+              "tool_calls": [
+                {
+                  "name": "detalhar_produto",
+                  "arguments": {
+                    "produto": "Ohana CK-20"
+                  },
+                  "is_error": false
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "memoria_entre_sessoes",
+      "description": "Histórico persistido em disco: um novo processo da CLI na mesma sessão lembra do cliente.",
+      "outcome": "passed",
+      "error": null,
+      "duration_seconds": 10.35,
+      "frozen_clock": [
+        "2026-03-25T10:00:00-04:00"
+      ],
+      "checks": [
+        {
+          "name": "arquivo da sessão gravado em EMPORIO_SESSIONS_DIR",
+          "passed": true,
+          "detail": "arquivos: ['persist-1.json']"
+        },
+        {
+          "name": "lembra o nome Carla",
+          "passed": true,
+          "detail": "encontrados ['Carla'] (mínimo 1) em: Lembro sim, Carla! E também que você toca violão 🎸 Quer ver algum instrumento ou tirar alguma dúvida?"
+        }
+      ],
+      "runs": [
+        {
+          "session_id": "persist-1",
+          "now": "2026-03-25T10:00:00-04:00",
+          "duration_seconds": 5.35,
+          "turns": [
+            {
+              "user": "Oi, meu nome é Carla e eu toco violão.",
+              "reply": "Oi, Carla! Que bom te ver por aqui 😊 Violão é demais!\n\nComo posso te ajudar hoje? Quer conhecer os violões que temos, trocar de instrumento ou tirar alguma dúvida?",
+              "tool_calls": []
+            }
+          ]
+        },
+        {
+          "session_id": "persist-1",
+          "now": "2026-03-25T10:00:00-04:00",
+          "duration_seconds": 4.99,
+          "turns": [
+            {
+              "user": "Você lembra o meu nome?",
+              "reply": "Lembro sim, Carla! E também que você toca violão 🎸\n\nQuer ver algum instrumento ou tirar alguma dúvida?",
+              "tool_calls": []
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
