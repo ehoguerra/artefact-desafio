@@ -44,7 +44,6 @@ def _order(number: int):
     return matches
 
 
-@pytest.mark.example(number=6, slug="defeito-fora-do-prazo", title="Defeito fora do prazo de troca")
 def test_defeito_fora_do_prazo_de_troca(
     scenario: Scenario, run_conversation: RunConversation
 ) -> None:

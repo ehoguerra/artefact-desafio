@@ -5,7 +5,9 @@ instrumentos musicais em Campo Grande/MS. A assistente virtual, **Lia**, respond
 com o tom da loja ("informal mas profissional"). Ela consulta catálogo, promoções e pedidos em tempo real,
 aplica o manual de políticas e recusa assuntos fora do escopo.
 
-Há conversas reais com o agente em [`examples/`](examples/), geradas pela suíte de testes ponta a ponta.
+Há cinco conversas reais com o agente em [`examples/`](examples/), geradas pela suíte de testes ponta a
+ponta. As transcrições dos 20 cenários, com as notas do juiz, estão em
+[`reports/e2e/latest/`](reports/e2e/latest/report.md).
 
 ## Como rodar
 
