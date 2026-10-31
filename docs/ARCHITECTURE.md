@@ -136,8 +136,10 @@ class Agent:
     def respond(messages: list[dict], user_text: str) -> AgentReply
         # anexa a mensagem do usuário e todos os turnos (assistant/tool_result) em `messages` (append-only)
 ```
-Loop manual: `client.messages.create(model, max_tokens=16000, system=SYSTEM_PROMPT, tools=TOOL_DEFINITIONS,
-output_config={"effort": settings.effort}, cache_control={"type":"ephemeral"}, messages=...)`.
+Loop manual: `client.beta.messages.create(model, max_tokens=16000, system=SYSTEM_PROMPT, tools=TOOL_DEFINITIONS,
+output_config={"effort": settings.effort}, cache_control={"type":"ephemeral"}, messages=...,
+betas=["server-side-fallback-2026-07-01"], fallbacks="default")` (endpoint beta pelo fallback de recusa no servidor).
+Ferramentas são executadas sempre que a resposta contém blocos `tool_use`, qualquer que seja o `stop_reason`.
 Todos os `tool_result` de um turno vão numa única mensagem `user`. Conteúdo do assistant é anexado como
 `response.content` serializado (`block.model_dump(exclude_none=True)`), preservando blocos de thinking.
 Limite `max_tool_rounds`; `stop_reason == "refusal"` e erros da API viram resposta amigável (sem stacktrace).

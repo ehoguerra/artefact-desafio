@@ -162,11 +162,13 @@ deve recusar o recebimento e entrar em contato imediatamente com a loja.
 <!-- topic: rastreamento -->
 
 - O código de rastreamento é enviado automaticamente por e-mail e WhatsApp assim que o pedido é despachado.
-  Antes do despacho (pedidos pendentes ou confirmados) ainda não existe código.
 - Formato padrão: "BR" + 9 caracteres alfanuméricos + "BR" (exemplo: BR4K7M2X9P1BR).
 - O rastreamento pode ser consultado diretamente no site dos Correios ou da Jadlog.
 - Entregas na região metropolitana de Campo Grande são feitas por motoboy próprio, com contato telefônico
   antes da entrega.
+
+> Nota de curadoria: como o código só é gerado no despacho, pedidos pendentes ou confirmados ainda não têm
+> código de rastreamento.
 
 ## Promoções e descontos
 <!-- topic: promocoes -->

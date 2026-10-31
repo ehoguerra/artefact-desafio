@@ -32,11 +32,11 @@ def main(argv: list[str] | None = None) -> int:
         settings = load_settings()
         store = ConversationStore(settings.sessions_dir)
         messages = store.load(args.session) if args.session else []
-    except ValueError as error:
+        if not os.environ.get("ANTHROPIC_API_KEY"):
+            return _fail(MISSING_KEY_MESSAGE)
+        agent = _build_agent(settings)
+    except (ValueError, OSError) as error:
         return _fail(str(error))
-    if not os.environ.get("ANTHROPIC_API_KEY"):
-        return _fail(MISSING_KEY_MESSAGE)
-    agent = _build_agent(settings)
     tracer = Tracer.open(args.trace) if args.trace else Tracer.null()
     with tracer:
         try:
@@ -117,4 +117,4 @@ def _fail(message: str) -> int:
 def _force_utf8() -> None:
     for stream in (sys.stdin, sys.stdout, sys.stderr):
         if isinstance(stream, io.TextIOWrapper):
-            stream.reconfigure(encoding="utf-8")
+            stream.reconfigure(encoding="utf-8", errors="replace")

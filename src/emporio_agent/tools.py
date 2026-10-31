@@ -1,6 +1,7 @@
 """Tool schemas exposed to the model and their executor (never raises)."""
 
 import json
+import math
 from collections.abc import Callable
 from dataclasses import dataclass
 from datetime import date, datetime
@@ -60,7 +61,8 @@ TOOL_DEFINITIONS: list[dict[str, Any]] = [
         "Busca instrumentos no catálogo da loja. Use SEMPRE que o cliente perguntar o que "
         "a loja tem, pedir opções/sugestões, filtrar por categoria (violão, guitarra, "
         "ukulele, teclado, bateria...), faixa de preço ou disponibilidade, ou citar um "
-        "produto de forma vaga. Retorna até 15 produtos do mais barato ao mais caro, com "
+        f"produto de forma vaga. Retorna até {MAX_SEARCH_RESULTS} produtos do mais barato ao "
+        "mais caro, com "
         "preço final já calculado (promoção, PIX, parcelamento), disponibilidade e "
         "`total_encontrado`. Nunca informe preço ou estoque sem esta tool ou "
         "`detalhar_produto`. Não use para acessórios (a loja não vende).",
@@ -402,6 +404,6 @@ def _optional_money(args: dict[str, Any], key: str) -> Decimal | None:
     value = args[key]
     if value is None:
         return None
-    if isinstance(value, bool) or not isinstance(value, int | float) or value < 0:
+    if isinstance(value, bool) or not isinstance(value, int | float) or not 0 <= value < math.inf:
         raise ToolError(f"'{key}' deve ser um valor em reais não negativo ou null.")
     return Decimal(str(value))

@@ -71,10 +71,10 @@ class Agent:
             raise
         except anthropic.RateLimitError as error:
             text = _log_api_error(error, RATE_LIMIT_REPLY)
-        except anthropic.APIStatusError as error:
-            text = _log_api_error(error, SERVICE_ERROR_REPLY)
         except anthropic.APIConnectionError as error:
             text = _log_api_error(error, CONNECTION_REPLY)
+        except anthropic.APIError as error:
+            text = _log_api_error(error, SERVICE_ERROR_REPLY)
         else:
             if text:
                 return AgentReply(text=text, tool_calls=tuple(calls))
@@ -90,7 +90,9 @@ class Agent:
                 logger.warning("O modelo recusou a resposta (stop_reason=refusal)")
                 return ""
             messages.append({"role": "assistant", "content": _serialize(response.content)})
-            if response.stop_reason != "tool_use":
+            # Keyed on the blocks, not stop_reason: a tool_use cut off by max_tokens still needs a
+            # tool_result, or every later request on this history is rejected.
+            if not any(block.type == "tool_use" for block in response.content):
                 return _visible_text(response.content)
             messages.append({"role": "user", "content": self._run_tools(response.content, calls)})
         messages.append(

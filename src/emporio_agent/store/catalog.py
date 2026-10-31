@@ -98,8 +98,8 @@ class Customer:
         """E-mail ignoring case/spaces, or phone by digits (with or without DDD / +55)."""
         if "@" in contact:
             return contact.strip().casefold() == self.email.strip().casefold()
-        stored = digits(self.phone)
-        return digits(contact) in {stored, stored[2:], "55" + stored}
+        entered, stored = digits(contact), digits(self.phone)
+        return bool(entered) and entered in {stored, stored[2:], "55" + stored}
 
 
 @dataclass(frozen=True, slots=True)
