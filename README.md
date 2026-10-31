@@ -5,9 +5,20 @@ instrumentos musicais em Campo Grande/MS. A assistente virtual, **Lia**, respond
 com o tom da loja ("informal mas profissional"). Ela consulta catálogo, promoções e pedidos em tempo real,
 aplica o manual de políticas e recusa assuntos fora do escopo.
 
-Há cinco conversas reais com o agente em [`examples/`](examples/), geradas pela suíte de testes ponta a
-ponta. As transcrições dos 20 cenários, com as notas do juiz, estão em
-[`reports/e2e/latest/`](reports/e2e/latest/report.md).
+## Exemplos de interação
+
+Conversas reais com o agente, geradas pela suíte de testes ponta a ponta:
+
+| Exemplo | O que demonstra |
+|---|---|
+| [Violões até R$ 1.000](examples/01-catalogo-violoes.md) | busca no catálogo com filtro de categoria e preço; esgotados e descontinuados ficam de fora |
+| [Endereço e horário](examples/02-endereco-e-horario.md) | política da loja combinada com o relógio: "estão abertos agora?" |
+| [Preço do Takamine GD20](examples/03-preco-takamine-gd20.md) | preço, PIX e parcelamento calculados no código; a promoção inativa de 12% é ignorada |
+| [Direito de arrependimento](examples/04-arrependimento-de-compra.md) | **não trivial:** verifica a identidade, consulta o pedido e aplica a política às datas reais |
+| [Fora do escopo](examples/05-fora-do-escopo.md) | acessórios redirecionados com educação e assunto alheio recusado |
+
+As transcrições dos 20 cenários, com as notas do juiz, estão no
+[relatório E2E](reports/e2e/latest/report.md).
 
 ## Como rodar
 
@@ -48,6 +59,10 @@ cada execução:
   modelo e o relógio simulado.
 - `reports/e2e/latest/transcripts/*.md`: a conversa completa de cada cenário.
 - `examples/*.md`: as conversas de exemplo, regeneradas pela própria suíte.
+
+Uma execução completa leva cerca de 5 minutos. Ela faz chamadas pagas à API: as 20 conversas do agente e
+uma avaliação do juiz por cenário. Com `EMPORIO_JUDGE=off`, a execução fica mais barata. Sem
+`ANTHROPIC_API_KEY`, a suíte é pulada com uma mensagem explicando o motivo.
 
 ## Arquitetura
 
@@ -147,8 +162,16 @@ Eles cobrem catálogo, preços, pedidos, políticas, escopo, privacidade e inje�
 O juiz pegou o que as verificações objetivas não pegam: alucinações sutis com os fatos certos. Por exemplo,
 descrever um produto que a loja não tem, inventar um "e-mail de confirmação" que a política não menciona,
 deduzir preços além dos resultados exibidos, ou prometer que a equipe "vai investigar". Cada achado virou
-uma correção no prompt ou na ferramenta. A faixa de preço completa, por exemplo, passou a vir na busca. O
-juiz nunca foi silenciado nem teve os limiares baixados.
+uma correção no prompt ou na ferramenta. A faixa de preço completa, por exemplo, passou a vir na busca.
+
+Os limiares nunca foram baixados, mas a rubrica do juiz foi calibrada três vezes, depois de ler as
+transcrições em que ele penalizava algo legítimo. Cada calibração esclareceu que não é invenção:
+- citar tipos de instrumento como exemplo;
+- encaminhar o cliente aos canais oficiais da equipe;
+- descrever o que as próprias ferramentas da Lia sabem fazer.
+
+Para separar a calibração de um afrouxamento, toda nota de fidelidade baixa foi checada contra a frase
+exata citada pelo juiz.
 
 O relógio da loja é congelado por cenário (`EMPORIO_NOW`), o que torna reproduzíveis os casos que dependem
 de data, como o de arrependimento de compra.
@@ -200,11 +223,14 @@ O manual tem contradições. Cada resolução abaixo está anotada como "Nota de
 
 ## Uso de assistentes de código
 
-Usei o **Claude Code** (Claude Opus 5.5) como par de programação, num fluxo de **orquestração de agentes**:
+O projeto foi construído com o **Claude Code** (Claude Opus 5.5), num fluxo de **orquestração de
+agentes**. Eu defini as regras de trabalho e acompanhei as entregas: os testes são só E2E, com um artefato
+verificável; os modos de falha vêm antes do código; os agentes trabalham em paralelo; o código é limpo. A
+execução foi do Claude Code, como agente orquestrador e subagentes:
 
-1. **Reconhecimento e contrato.** Li o enunciado, os CSVs e o PDF. Mapeei as inconsistências dos dados e
-   escrevi o contrato entre os módulos (`docs/ARCHITECTURE.md`). Pela regra de trabalho que sigo, os modos
-   de falha (`docs/FAILURE_MODES.md`) foram escritos **antes** de qualquer código.
+1. **Reconhecimento e contrato.** O orquestrador leu o enunciado, os CSVs e o PDF, mapeou as
+   inconsistências dos dados e escreveu o contrato entre os módulos (`docs/ARCHITECTURE.md`). Os modos de
+   falha (`docs/FAILURE_MODES.md`) foram escritos **antes** de qualquer código.
 2. **Implementação em paralelo.** Três subagentes trabalharam ao mesmo tempo, em arquivos disjuntos e
    presos ao contrato:
    - (a) camada de dados, precificação, políticas curadas e ferramentas;
@@ -217,11 +243,12 @@ Usei o **Claude Code** (Claude Opus 5.5) como par de programação, num fluxo de
    agente fez uma revisão de correção e de código limpo.
 4. **Validação.** A suíte E2E roda a CLI real contra o modelo real e gera os exemplos de conversa deste
    repositório.
-5. **Ampliação da suíte.** Escrevi primeiro os novos modos de falha (E1–E11, J1–J3). Em seguida, dois
-   agentes em paralelo escreveram os 11 cenários novos e o juiz LLM. Cada falha foi diagnosticada pela
-   transcrição antes de qualquer ajuste. Quando o agente errava, corrigi o prompt ou a ferramenta. Quando a
-   checagem testava redação em vez de fato, corrigi a checagem.
+5. **Ampliação da suíte.** A pedido meu, a suíte cresceu de 9 para 20 cenários e ganhou o juiz LLM. Os
+   novos modos de falha (E1–E11, J1–J3) foram escritos primeiro. Em seguida, dois subagentes em paralelo
+   escreveram os cenários e o juiz. Cada falha foi diagnosticada pela transcrição antes de qualquer ajuste.
+   Quando o agente errava, o prompt ou a ferramenta foi corrigido. Quando a checagem testava redação em vez
+   de fato, a checagem foi corrigida.
 
-Cada decisão de produto foi revisada antes de entrar no código: o roteamento por ferramentas, a
-verificação de pedido para LGPD, a curadoria das contradições do manual e a aritmética no código. A IA
-acelerou a escrita e a revisão. O histórico de commits reflete essas etapas.
+As decisões técnicas estão documentadas acima com a justificativa de cada uma, para poderem ser
+auditadas: o roteamento por ferramentas, a verificação de pedido para LGPD, a curadoria das contradições
+do manual e a aritmética no código. O histórico de commits reflete essas etapas.
