@@ -224,30 +224,39 @@ O manual tem contradições. Cada resolução abaixo está anotada como "Nota de
 ## Uso de assistentes de código
 
 O projeto foi construído com o **Claude Code** (Claude Opus 5.5), num fluxo de **orquestração de
-agentes**. Eu defini as regras de trabalho e acompanhei as entregas: os testes são só E2E, com um artefato
-verificável; os modos de falha vêm antes do código; os agentes trabalham em paralelo; o código é limpo. A
-execução foi do Claude Code, como agente orquestrador e subagentes:
+agentes**. A divisão de papéis foi clara: eu orquestrei o trabalho e organizei toda a base de que os
+agentes precisavam; o Claude Code, como agente orquestrador e subagentes, executou.
 
-1. **Reconhecimento e contrato.** O orquestrador leu o enunciado, os CSVs e o PDF, mapeou as
-   inconsistências dos dados e escreveu o contrato entre os módulos (`docs/ARCHITECTURE.md`). Os modos de
-   falha (`docs/FAILURE_MODES.md`) foram escritos **antes** de qualquer código.
-2. **Implementação em paralelo.** Três subagentes trabalharam ao mesmo tempo, em arquivos disjuntos e
-   presos ao contrato:
-   - (a) camada de dados, precificação, políticas curadas e ferramentas;
-   - (b) loop do agente, persona, persistência e CLI;
-   - (c) suíte E2E com relatório.
+### Meu papel: orquestração e base do agente
 
-   Cada um recebeu os valores esperados para conferir (por exemplo, "Takamine GD20 → R$ 2.199,00; PIX
-   R$ 2.089,05; 12x de R$ 183,25").
-3. **Integração e revisão.** As partes foram integradas, o prompt e o loop foram revisados, e um quarto
-   agente fez uma revisão de correção e de código limpo.
-4. **Validação.** A suíte E2E roda a CLI real contra o modelo real e gera os exemplos de conversa deste
-   repositório.
-5. **Ampliação da suíte.** A pedido meu, a suíte cresceu de 9 para 20 cenários e ganhou o juiz LLM. Os
-   novos modos de falha (E1–E11, J1–J3) foram escritos primeiro. Em seguida, dois subagentes em paralelo
-   escreveram os cenários e o juiz. Cada falha foi diagnosticada pela transcrição antes de qualquer ajuste.
-   Quando o agente errava, o prompt ou a ferramenta foi corrigido. Quando a checagem testava redação em vez
-   de fato, a checagem foi corrigida.
+- **Organização da base.** Preparei o terreno em que os agentes trabalharam: os dados da loja (CSVs e
+  manual de políticas), o enunciado e as minhas regras de desenvolvimento, de forma que cada agente
+  partisse do mesmo contexto e dos mesmos critérios.
+- **Regras de trabalho.** Defini os padrões que guiaram toda a execução:
+  - testes **só E2E**, com um artefato verificável e repetível ao final;
+  - **modos de falha escritos antes** do código;
+  - **agentes em paralelo**, cada um em arquivos disjuntos, presos a um contrato;
+  - **código limpo**.
+- **Orquestração.** Conduzi as etapas, acompanhei cada entrega, pedi revisões e ampliações (como a
+  expansão da suíte e o juiz LLM) e decidi quando cada etapa estava pronta para seguir.
+
+### Papel do Claude Code: execução
+
+| Etapa | O que foi feito |
+|---|---|
+| **1. Reconhecimento e contrato** | O orquestrador leu o enunciado, os CSVs e o PDF, mapeou as inconsistências dos dados e escreveu o contrato entre os módulos (`docs/ARCHITECTURE.md`). Os modos de falha (`docs/FAILURE_MODES.md`) vieram **antes** de qualquer código. |
+| **2. Implementação em paralelo** | Três subagentes ao mesmo tempo, em arquivos disjuntos: **(a)** dados, precificação, políticas curadas e ferramentas; **(b)** loop do agente, persona, persistência e CLI; **(c)** suíte E2E com relatório. Cada um recebeu valores esperados para conferir (ex.: "Takamine GD20 → R$ 2.199,00; PIX R$ 2.089,05; 12x de R$ 183,25"). |
+| **3. Integração e revisão** | As partes foram integradas, o prompt e o loop revisados, e um quarto agente fez uma revisão de correção e de código limpo. |
+| **4. Validação** | A suíte E2E roda a CLI real contra o modelo real e gera os exemplos de conversa deste repositório. |
+| **5. Ampliação da suíte** | A suíte cresceu de 9 para 20 cenários e ganhou o juiz LLM. Os novos modos de falha (E1–E11, J1–J3) foram escritos primeiro; depois, dois subagentes em paralelo escreveram os cenários e o juiz. |
+
+### Como as falhas foram tratadas
+
+Cada falha da suíte foi diagnosticada pela transcrição antes de qualquer ajuste:
+
+- **o agente errou** → corrigiu-se o prompt ou a ferramenta;
+- **a checagem testava redação, não fato** → corrigiu-se a checagem;
+- **os limites de nota do juiz nunca foram baixados.**
 
 As decisões técnicas estão documentadas acima com a justificativa de cada uma, para poderem ser
 auditadas: o roteamento por ferramentas, a verificação de pedido para LGPD, a curadoria das contradições
