@@ -46,11 +46,6 @@ def pytest_configure(config: pytest.Config) -> None:
     )
 
 
-def pytest_sessionstart(session: pytest.Session) -> None:
-    if api_key_available():
-        reset_directory(REPORT_DIR)
-
-
 def pytest_collection_modifyitems(items: list[pytest.Item]) -> None:
     if api_key_available():
         return
@@ -82,6 +77,9 @@ def pytest_sessionfinish(session: pytest.Session) -> None:
         model=cli_environment().get("EMPORIO_MODEL") or DEFAULT_MODEL,
         judge_model=judge.model if judge else None,
     )
+    # Reset only when a fresh report replaces it: a run that executed nothing (e.g. --collect-only)
+    # must never wipe the last published artifact.
+    reset_directory(REPORT_DIR)
     write_report(scenarios, run, REPORT_DIR, EXAMPLES_DIR)
 
 
