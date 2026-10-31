@@ -2,20 +2,20 @@
 
 Política da loja (endereço) combinada com o relógio da loja: está aberta agora?
 
-*Modelo: `claude-opus-5-5` · Data/hora simulada da loja: 2026-03-25T10:00:00-04:00*
+*Modelo: `claude-opus-5-5` · Data/hora simulada da loja: 2026-03-25T10:00:00-04:00 · Avaliação do juiz: média 4.8/5*
 
 **Cliente:** Qual o endereço da loja? E vocês estão abertos agora?
 
-**Lia:** Oi! A gente fica na **Rua 14 de Maio, 3200, Centro, Campo Grande/MS**, CEP 79202-333.
+**Lia:** Oi! A gente fica na **Rua 14 de Maio, 3200 – Centro, Campo Grande/MS** (CEP 79202-333).
 
-E sim, estamos abertos agora! Hoje (quarta) atendemos até as 18:00. 😊
+E sim, estamos abertos agora 😊 Hoje (quarta) a loja funciona até as 18h.
 
-Nosso horário:
-- Segunda a sexta: 09:00 às 18:00
-- Sábado: 09:00 às 13:00
+Nossos horários:
+- Segunda a sexta: das 9h às 18h
+- Sábado: das 9h às 13h
 - Domingos e feriados: fechado
 
-Se preferir, também dá pra falar com a gente pelo WhatsApp (67) 3341-4444. Posso te ajudar com mais alguma coisa?
+Se quiser falar com a gente, o telefone/WhatsApp é (67) 3341-4444. Quer ajuda com mais alguma coisa?
 
 <details><summary>Ferramentas consultadas</summary>
 
@@ -26,4 +26,4 @@ Se preferir, também dá pra falar com a gente pelo WhatsApp (67) 3341-4444. Pos
 
 ---
 
-Gerado automaticamente por `pytest tests/e2e` em 2026-10-31T11:29:14-03:00.
+Gerado automaticamente por `pytest tests/e2e` em 2026-10-31T13:19:09-03:00.
