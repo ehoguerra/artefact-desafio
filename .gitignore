@@ -1,0 +1,9 @@
+__pycache__/
+*.pyc
+.venv/
+.env
+.pytest_cache/
+.sessions/
+.ruff_cache/
+# Enunciado do desafio (material do processo seletivo, não faz parte do projeto)
+desafio_tecnico_ai_eng_artefact.pdf
