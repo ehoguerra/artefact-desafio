@@ -7,3 +7,6 @@ __pycache__/
 .ruff_cache/
 # Enunciado do desafio (material do processo seletivo, não faz parte do projeto)
 desafio_tecnico_ai_eng_artefact.pdf
+
+# PDF de entrega do processo seletivo (enviado por e-mail, fora do repositório)
+entrega/
