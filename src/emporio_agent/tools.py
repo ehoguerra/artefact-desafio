@@ -190,11 +190,19 @@ class ToolExecutor:
             max_price=_optional_money(args, "preco_max"),
             only_available=_required_bool(args, "apenas_disponiveis"),
         )
-        return {
+        result: dict[str, Any] = {
             "total_encontrado": len(found),
             "exibidos": min(len(found), MAX_SEARCH_RESULTS),
             "produtos": [self._summary(p) for p in found[:MAX_SEARCH_RESULTS]],
         }
+        if found:
+            # Covers the products cut by the limit, so the model never guesses what lies beyond it.
+            prices = [self._catalog.final_price(p) for p in found]
+            result["faixa_de_preco"] = {
+                "de": format_brl(min(prices)),
+                "ate": format_brl(max(prices)),
+            }
+        return result
 
     def _describe_product(self, args: dict[str, Any]) -> dict[str, Any]:
         query = _required_str(args, "produto")

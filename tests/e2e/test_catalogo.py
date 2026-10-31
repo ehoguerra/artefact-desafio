@@ -51,6 +51,8 @@ PROMOCAO_INATIVA = [
     "nao esta ativ",
     "encerr",
     "nao esta mais",
+    "nao ta mais",
+    "nao ta ativ",
     "expir",
     "nao vale",
     "nao esta vigente",

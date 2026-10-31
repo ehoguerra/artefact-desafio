@@ -29,6 +29,8 @@ chamada de ferramenta, o que ajuda na depuração.
 | `EMPORIO_EFFORT` | `low` | profundidade de raciocínio (`low` … `max`) |
 | `EMPORIO_SESSIONS_DIR` | `.sessions` | onde ficam os históricos |
 | `EMPORIO_NOW` | relógio real | congela o "agora" da loja (ISO 8601 com fuso); usado nos testes |
+| `EMPORIO_JUDGE` | ligado | `off` desliga o juiz LLM da suíte E2E (execuções mais baratas) |
+| `EMPORIO_JUDGE_MODEL` | `claude-sonnet-5-5` | modelo do juiz, diferente do modelo do agente |
 
 ### Testes ponta a ponta
 
@@ -40,7 +42,8 @@ A suíte executa a **CLI real**, como subprocesso, contra o **LLM real**. Ela ge
 cada execução:
 
 - `reports/e2e/latest/report.md` e `report.json`: cada cenário, cada verificação com o detalhe
-  (passou/falhou), as ferramentas chamadas com argumentos, o modelo e o relógio simulado.
+  (passou/falhou), as notas do juiz com justificativa, as ferramentas chamadas com argumentos, o
+  modelo e o relógio simulado.
 - `reports/e2e/latest/transcripts/*.md`: a conversa completa de cada cenário.
 - `examples/*.md`: as conversas de exemplo, regeneradas pela própria suíte.
 
@@ -128,11 +131,25 @@ O cliente pode voltar depois e continuar a conversa. O histórico é *append-onl
 blocos de raciocínio do modelo. Se a API falhar no meio de um turno, o turno é desfeito e o histórico
 continua válido.
 
-**Testes: só E2E.** Em vez de testes unitários, nove cenários conversam com a CLI real e verificam
-**fatos** e **o trace de ferramentas**, e não a redação da resposta. Por exemplo: a ferramenta certa foi
-chamada? O preço 2.199 aparece? A promoção inativa de 12% ficou de fora? O LLM não é determinístico, então
-verificar fatos torna a suíte estável. O relógio da loja é congelado por cenário (`EMPORIO_NOW`), o que
-torna reproduzíveis os casos que dependem de data, como o de arrependimento de compra.
+**Testes: só E2E, em duas camadas.** Não há testes unitários. Vinte cenários conversam com a CLI real.
+Eles cobrem catálogo, preços, pedidos, políticas, escopo, privacidade e injeção de prompt.
+
+1. **Verificações objetivas** sobre **fatos** e **o trace de ferramentas**, e não sobre a redação. Por
+   exemplo: a ferramenta certa foi chamada? O preço 2.199 aparece? A promoção inativa de 12% ficou de fora?
+   Nenhum dado do cliente vazou na tentativa de injeção?
+2. **LLM como juiz.** Um modelo diferente do agente (`claude-sonnet-5-5`, com saída estruturada) lê cada
+   conversa, inclusive as saídas das ferramentas, e dá notas de 1 a 5 com justificativa. Os critérios são
+   **tom** (manual §7.1), **cordialidade**, **clareza** e **fidelidade** às ferramentas. Os mínimos são 3
+   nos três primeiros critérios e 4 em fidelidade.
+
+O juiz pegou o que as verificações objetivas não pegam: alucinações sutis com os fatos certos. Por exemplo,
+descrever um produto que a loja não tem, inventar um "e-mail de confirmação" que a política não menciona,
+deduzir preços além dos resultados exibidos, ou prometer que a equipe "vai investigar". Cada achado virou
+uma correção no prompt ou na ferramenta. A faixa de preço completa, por exemplo, passou a vir na busca. O
+juiz nunca foi silenciado nem teve os limiares baixados.
+
+O relógio da loja é congelado por cenário (`EMPORIO_NOW`), o que torna reproduzíveis os casos que dependem
+de data, como o de arrependimento de compra.
 
 ### Tratamento dos dados
 
@@ -171,9 +188,9 @@ O manual tem contradições. Cada resolução abaixo está anotada como "Nota de
   dados.
 - **Reclamações** são acolhidas e encaminhadas para o telefone ou e-mail, mas não são registradas. Com mais
   tempo, eu criaria uma ferramenta `registrar_reclamacao` com protocolo e SLA de 24h úteis.
-- **Avaliação:** a suíte E2E cobre 9 cenários com verificações objetivas. O passo seguinte seria um conjunto
-  maior de avaliação, com perguntas reais de clientes e um LLM como juiz para tom e cordialidade, medido a
-  cada mudança de prompt.
+- **Avaliação:** a suíte cobre 20 cenários escritos à mão. Com respostas não determinísticas, um cenário
+  raramente oscila entre execuções. O próximo passo seria rodar cada cenário N vezes e reportar a taxa de
+  aprovação, além de ampliar o conjunto com perguntas reais de clientes vindas do WhatsApp.
 - **Canal:** o manual cita o WhatsApp como canal principal. O `Agent` não depende da CLI, então plugar um
   webhook (FastAPI + WhatsApp Business API) seria uma nova camada de interface.
 - **Escala do catálogo:** para milhares de produtos, a busca em memória passaria a SQLite/Postgres com
@@ -198,6 +215,10 @@ Usei o **Claude Code** (Claude Opus 5.5) como par de programação, num fluxo de
    agente fez uma revisão de correção e de código limpo.
 4. **Validação.** A suíte E2E roda a CLI real contra o modelo real e gera os exemplos de conversa deste
    repositório.
+5. **Ampliação da suíte.** Escrevi primeiro os novos modos de falha (E1–E11, J1–J3). Em seguida, dois
+   agentes em paralelo escreveram os 11 cenários novos e o juiz LLM. Cada falha foi diagnosticada pela
+   transcrição antes de qualquer ajuste. Quando o agente errava, corrigi o prompt ou a ferramenta. Quando a
+   checagem testava redação em vez de fato, corrigi a checagem.
 
 Cada decisão de produto foi revisada antes de entrar no código: o roteamento por ferramentas, a
 verificação de pedido para LGPD, a curadoria das contradições do manual e a aritmética no código. A IA

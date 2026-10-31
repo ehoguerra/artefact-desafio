@@ -151,7 +151,8 @@ def test_arrependimento_de_compra(scenario: Scenario, run_conversation: RunConve
     scenario.expect_fact(
         "cita o prazo de 7 dias",
         reply,
-        re.search(r"\b7 (\(sete\) )?dias|sete dias", normalize(reply)) is not None,
+        # The fact is the 7-day deadline, phrased freely ("7 dias", "3 dias dos 7 permitidos").
+        re.search(r"\b(7|sete)\b( \(sete\))? (dias|permitidos)", normalize(reply)) is not None,
     )
     scenario.expect_mentions(
         "confirma que a devolução é possível",
