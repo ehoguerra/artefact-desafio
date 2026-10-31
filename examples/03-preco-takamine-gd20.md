@@ -6,14 +6,13 @@ Preço calculado pelo sistema: ignora a promoção inativa de 12%; informa PIX o
 
 **Cliente:** Quanto custa o Takamine GD20?
 
-**Lia:** Oi! O **Takamine GD20 Dreadnought Natural** sai por **R$ 2.199,00** 🎸
+**Lia:** O Takamine GD20 Dreadnought Natural sai por **R$ 2.199,00**. Também dá pra pagar assim:
+- **PIX:** R$ 2.089,05
+- **Cartão:** 12x de R$ 183,25 sem juros
 
-- No PIX: **R$ 2.089,05**
-- Ou em **12x de R$ 183,25 sem juros**
+Temos 5 unidades em estoque. Ele tem tampo sólido de cedro, fundo e laterais em sapele, braço de mogno e cordas de aço. O som é quente e bem definido, muito bom pra fingerstyle. Ele não tem captação elétrica.
 
-Temos 5 unidades em estoque. Ele tem tampo sólido em cedro, laterais e fundo em sapele, braço em mogno, cordas de aço e não tem captação. O timbre é quente e definido, ótimo pra fingerstyle.
-
-Posso te ajudar com mais alguma coisa?
+Posso te ajudar em mais alguma coisa? 🎸
 
 <details><summary>Ferramentas consultadas</summary>
 
@@ -23,4 +22,4 @@ Posso te ajudar com mais alguma coisa?
 
 ---
 
-Gerado automaticamente por `pytest tests/e2e` em 2026-10-31T13:19:09-03:00.
+Gerado automaticamente por `pytest tests/e2e` em 2026-10-31T13:45:20-03:00.

@@ -2,13 +2,13 @@
 
 Escopo do atendimento: acessórios são redirecionados com educação e temas alheios à loja são recusados com gentileza.
 
-*Modelo: `claude-opus-5-5` · Data/hora simulada da loja: 2026-03-25T10:00:00-04:00 · Avaliação do juiz: média 5.0/5*
+*Modelo: `claude-opus-5-5` · Data/hora simulada da loja: 2026-03-25T10:00:00-04:00 · Avaliação do juiz: média 4.8/5*
 
 **Cliente:** Vocês vendem cordas e amplificador?
 
-**Lia:** Oi! Infelizmente não 😕 A Empório da Música trabalha só com instrumentos musicais, então não vendemos acessórios como cordas e amplificadores.
+**Lia:** Oi! Cordas e amplificadores a gente não vende, infelizmente. A Empório da Música trabalha só com instrumentos musicais, então acessórios como cordas, palhetas, cabos, cases, pedais e amplificadores ficam de fora.
 
-Se você estiver procurando um instrumento, como violão, guitarra, ukulele ou teclado, posso te mostrar as opções que temos agora. Quer que eu dê uma olhada?
+Se você estiver procurando um instrumento, como violão, guitarra, ukulele ou teclado, eu te ajudo a encontrar o ideal. Tá pensando em algum? 🎸
 
 <details><summary>Ferramentas consultadas</summary>
 
@@ -18,8 +18,8 @@ Se você estiver procurando um instrumento, como violão, guitarra, ukulele ou t
 
 **Cliente:** E você me passa uma receita de bolo de cenoura?
 
-**Lia:** Haha, adoraria, mas receita não é comigo 😄 Aqui eu só posso te ajudar com instrumentos musicais. Quer ver alguma opção de violão, guitarra, teclado ou outro instrumento?
+**Lia:** Receita de bolo eu fico devendo 😄 Aqui eu só consigo ajudar com assuntos da loja. Mas se quiser procurar um instrumento, é só me chamar!
 
 ---
 
-Gerado automaticamente por `pytest tests/e2e` em 2026-10-31T13:19:09-03:00.
+Gerado automaticamente por `pytest tests/e2e` em 2026-10-31T13:45:20-03:00.

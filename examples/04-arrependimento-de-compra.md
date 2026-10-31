@@ -2,20 +2,21 @@
 
 Pedido verificado com e-mail do cliente e política de devolução aplicada às datas reais do pedido (entregue há 3 dias, dentro do prazo de 7 dias).
 
-*Modelo: `claude-opus-5-5` · Data/hora simulada da loja: 2026-02-20T15:00:00-04:00 · Avaliação do juiz: média 4.2/5*
+*Modelo: `claude-opus-5-5` · Data/hora simulada da loja: 2026-02-20T15:00:00-04:00 · Avaliação do juiz: média 4.8/5*
 
 **Cliente:** Me arrependi da minha compra, posso devolver meu pedido?
 
-**Lia:** Pode sim, dependendo do prazo! 😊 Pelo direito de arrependimento (compras online), dá pra devolver assim:
+**Lia:** Claro, posso ver isso pra você! 😊 Nas compras online, você pode se arrepender e devolver em até **7 dias corridos depois de receber** o produto, sem precisar explicar o motivo. As condições são:
 
-- **Prazo:** até 7 dias corridos depois de receber o produto, sem precisar justificar
-- **Estado do produto:** na embalagem original, sem sinais de uso, com todos os acessórios e manuais
-- **Frete da devolução:** fica por conta da loja
-- **Reembolso:** na mesma forma de pagamento que você usou, em até 10 dias úteis
+- O produto tem que estar na embalagem original, sem sinais de uso, com todos os acessórios e manuais
+- A loja paga o frete da devolução
+- O reembolso sai na mesma forma de pagamento da compra, em até 10 dias úteis
 
-Atenção: instrumentos personalizados ou com ajuste sob encomenda (setup, regulagem especial) e itens de liquidação com aviso de "venda final" não podem ser devolvidos.
+Alguns itens não podem ser devolvidos: instrumentos com personalização ou ajuste sob encomenda (setup, regulagem especial), produtos de liquidação marcados como "venda final" e boquilhas de instrumentos de sopro.
 
-Se você me passar o **número do pedido** e o **e-mail ou telefone do cadastro**, eu consulto o pedido e te digo se ele ainda está no prazo.
+Pra eu ver se o seu pedido está dentro do prazo, me manda:
+1. O **número do pedido**
+2. O **e-mail ou telefone** que você usou no cadastro
 
 <details><summary>Ferramentas consultadas</summary>
 
@@ -25,31 +26,32 @@ Se você me passar o **número do pedido** e o **e-mail ou telefone do cadastro*
 
 **Cliente:** É o pedido 7, meu email é leticia.rocha@jmail.com
 
-**Lia:** Oi, Letícia! Achei seu pedido 😊
+**Lia:** Oi, Letícia! Encontrei seu pedido nº 7, o **ukulele Shelby SU-21S Soprano Sunburst** (R$ 159,90, pago no cartão em 3x). O status é **entregue**.
 
-- **Pedido 7:** Shelby SU-21S Soprano Sunburst (ukulele), R$ 159,90 no cartão de crédito em 3x
-- **Status:** entregue
-- **Previsão de entrega:** 17/02/2026
+**Você está dentro do prazo de arrependimento** ✅
+- A previsão de entrega era **17/02/2026**, então isso dá **3 dias** até hoje (20/02)
+- O prazo é de 7 dias corridos depois do recebimento, então você ainda tem tempo
 
-**Seu pedido ainda está dentro do prazo de arrependimento.** Hoje é 20/02, então já se passaram 3 dias desde a previsão de entrega, e o limite é de 7 dias corridos depois do recebimento.
+Só um aviso: o sistema não registra a data em que você recebeu de fato, então usei a previsão de entrega como referência. Se chegou depois disso, o prazo também começa depois.
 
-O sistema não registra o dia exato em que o ukulele chegou, então usei a previsão de entrega para calcular. Se ele chegou em outro dia, o prazo muda. De qualquer forma, é melhor fazer o pedido de devolução logo.
+Pra devolver, o ukulele precisa estar na embalagem original, sem sinais de uso e com tudo o que veio junto. A loja paga o frete da devolução, e o reembolso volta no seu cartão em até 10 dias úteis.
 
-Para a devolução ser aceita, o ukulele precisa estar na embalagem original, sem sinais de uso e com todos os acessórios e manuais. O frete da devolução fica por conta da loja. O reembolso volta para o seu cartão em até 10 dias úteis.
-
-Para fazer o pedido de devolução, fale com a nossa equipe:
+Pra pedir a devolução, é só falar com a equipe:
 📞 Telefone/WhatsApp: (67) 3341-4444
 ✉️ E-mail: contato@emporiodamusica.com.br
 
-A loja está aberta agora, até as 18h. Posso ajudar em mais alguma coisa?
+A loja está aberta hoje até as 18h. Como o prazo é curto, vale entrar em contato logo.
+
+Posso te ajudar com mais alguma coisa?
 
 <details><summary>Ferramentas consultadas</summary>
 
 - `consultar_pedido` `{"numero_pedido": 7, "email_ou_telefone": "leticia.rocha@jmail.com"}`
 - `status_loja` `{}`
+- `consultar_politica` `{"topico": "trocas_e_devolucoes"}`
 
 </details>
 
 ---
 
-Gerado automaticamente por `pytest tests/e2e` em 2026-10-31T13:19:09-03:00.
+Gerado automaticamente por `pytest tests/e2e` em 2026-10-31T13:45:20-03:00.

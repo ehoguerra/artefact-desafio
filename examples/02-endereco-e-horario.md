@@ -6,16 +6,16 @@ Política da loja (endereço) combinada com o relógio da loja: está aberta ago
 
 **Cliente:** Qual o endereço da loja? E vocês estão abertos agora?
 
-**Lia:** Oi! A gente fica na **Rua 14 de Maio, 3200 – Centro, Campo Grande/MS** (CEP 79202-333).
+**Lia:** A gente fica na **Rua 14 de Maio, 3200, Centro, Campo Grande/MS**, CEP 79202-333. 📍
 
-E sim, estamos abertos agora 😊 Hoje (quarta) a loja funciona até as 18h.
+E sim, estamos abertos agora! Hoje, quarta, ficamos abertos até as 18h.
 
-Nossos horários:
-- Segunda a sexta: das 9h às 18h
-- Sábado: das 9h às 13h
-- Domingos e feriados: fechado
+Nosso horário:
+- Segunda a sexta: 9h às 18h
+- Sábado: 9h às 13h
+- Domingo e feriados: fechado
 
-Se quiser falar com a gente, o telefone/WhatsApp é (67) 3341-4444. Quer ajuda com mais alguma coisa?
+Posso te ajudar em mais alguma coisa? Quer ver algum instrumento antes de vir?
 
 <details><summary>Ferramentas consultadas</summary>
 
@@ -26,4 +26,4 @@ Se quiser falar com a gente, o telefone/WhatsApp é (67) 3341-4444. Quer ajuda c
 
 ---
 
-Gerado automaticamente por `pytest tests/e2e` em 2026-10-31T13:19:09-03:00.
+Gerado automaticamente por `pytest tests/e2e` em 2026-10-31T13:45:20-03:00.
